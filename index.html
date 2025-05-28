@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sistema de Votación Educativo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css\estillo.css">
+</head>
+
+<body class="bg-light">
+
+    <div class="container py-4">
+        <!-- Registro -->
+        <div id="registro" class="card p-4 mb-3">
+            <h3>Registro de Usuario</h3>
+            <form id="formRegistro">
+                <div class="mb-3">
+                    <label for="ci" class="form-label">Carnet de Identidad:</label>
+                    <input type="text" id="ci" class="form-control" required />
+                </div>
+                <div class="mb-3">
+                    <label for="nombre" class="form-label">Nombre Completo:</label>
+                    <input type="text" id="nombre" class="form-control" required />
+                </div>
+                <div class="mb-3">
+                    <label for="correo" class="form-label">Correo:</label>
+                    <input type="email" id="correo" class="form-control" required />
+                </div>
+                <div class="mb-3">
+                    <label for="celular" class="form-label">Celular:</label>
+                    <input type="tel" id="celular" class="form-control" pattern="[0-9]{8,15}" placeholder="Ejemplo: 76543210" required />
+                </div>
+
+                <div class="mb-3">
+                    <label for="departamento" class="form-label">Departamento:</label>
+                    <select id="departamento" class="form-select" required>
+                    <option value="">Seleccione...</option>
+                    <option value="Beni">Beni</option>
+                    <option value="Chuquisaca">Chuquisaca</option>
+                    <option value="Cochabamba">Cochabamba</option>
+                    <option value="La Paz">La Paz</option>
+                    <option value="Oruro">Oruro</option>
+                    <option value="Pando">Pando</option>
+                    <option value="Potosí">Potosí</option>
+                    <option value="Santa Cruz">Santa Cruz</option>
+                    <option value="Tarija">Tarija</option>
+                    <!-- Más departamentos -->
+                </select>
+                </div>
+                <div class="mb-3">
+                    <label for="fechaNacimiento" class="form-label">Fecha de Nacimiento:</label>
+                    <input type="date" id="fechaNacimiento" class="form-control" required />
+                </div>
+                <button type="submit" class="btn btn-primary">Registrarse</button>
+                <button type="button" class="btn btn-link" onclick="mostrarSeccion('login')">Ya tengo cuenta</button>
+            </form>
+        </div>
+
+        <!-- Login -->
+        <div id="login" class="card p-4 mb-3" style="display:none;">
+            <h3>Iniciar Sesión</h3>
+            <form id="formLogin">
+                <div class="mb-3">
+                    <label for="loginCi" class="form-label">Carnet de Identidad:</label>
+                    <input type="text" id="loginCi" class="form-control" required />
+                </div>
+                <button type="submit" class="btn btn-success">Ingresar</button>
+                <button type="button" class="btn btn-link" onclick="mostrarSeccion('registro')">Crear cuenta</button>
+                <button type="button" class="btn btn-link" onclick="mostrarSeccion('recuperar')">Recuperar cuenta</button>
+            </form>
+        </div>
+
+        <!-- Recuperar Cuenta -->
+        <div id="recuperar" class="card p-4 mb-3" style="display:none;">
+            <h3>Recuperar Cuenta</h3>
+            <form id="formRecuperar">
+                <div class="mb-3">
+                    <label for="recuperarCorreo" class="form-label">Correo asociado:</label>
+                    <input type="email" id="recuperarCorreo" class="form-control" required />
+                </div>
+                <button type="submit" class="btn btn-warning">Recuperar</button>
+                <button type="button" class="btn btn-link" onclick="mostrarSeccion('login')">Volver al login</button>
+            </form>
+        </div>
+
+        <!-- Votación -->
+        <div id="votar" class="card p-4 mb-3" style="display:none;">
+            <h3>Votación</h3>
+            <div class="mb-3">
+                <span><strong>Usuario:</strong> <span id="usuarioActivo"></span></span>
+                <button class="btn btn-danger btn-sm ms-3" onclick="cerrarSesion()">Cerrar sesión</button>
+            </div>
+            <form id="formVotar">
+                <div class="form-check mb-2">
+                    <input class="form-check-input me-2" type="radio" name="candidato" value="Candidato A" id="cand1" />
+                    <label class="form-check-label d-flex align-items-center" for="cand1">
+                    <img src="img\Andrónico.jpg" alt="Candidato A" width="50" height="50" class="me-2 rounded-circle" />
+                    Andrónico A
+                </label>
+                </div>
+                <div class="form-check mb-2">
+                    <input class="form-check-input me-2" type="radio" name="candidato" value="Candidato B" id="cand2" />
+                    <label class="form-check-label d-flex align-items-center" for="cand2">
+                    <img src="img\Capitan_Lara.jpg" alt="Candidato B" width="50" height="50" class="me-2 rounded-circle" />
+                    Capitan Lara B
+                </label>
+                </div>
+                <div class="form-check mb-2">
+                    <input class="form-check-input me-2" type="radio" name="candidato" value="Candidato C" id="cand3" />
+                    <label class="form-check-label d-flex align-items-center" for="cand3">
+                    <img src="img\chi.png" alt="Candidato C" width="50" height="50" class="me-2 rounded-circle" />
+                    chi hyun chung C
+                </label>
+                </div>
+                <div class="form-check mb-3">
+                    <input class="form-check-input me-2" type="radio" name="candidato" value="Candidato D" id="cand4" />
+                    <label class="form-check-label d-flex align-items-center" for="cand4">
+                    <img src="img/jaime.jpg" alt="Candidato D" width="50" height="50" class="me-2 rounded-circle" />
+                    Jaime Dunn D
+                </label>
+                </div>
+                <button type="submit" class="btn btn-primary">Votar</button>
+            </form>
+        </div>
+
+        <!-- Estadísticas -->
+        <div id="estadisticas" class="card p-4 mb-3" style="display:none;">
+            <h3>Estadísticas de Votación</h3>
+            <div id="contenedorEstadisticas"></div>
+            <button class="btn btn-success mt-3" onclick="descargarResultadosPDF()">Descargar resultados PDF</button>
+            <button class="btn btn-secondary mt-3" onclick="mostrarSeccion('votar')">Volver a votar</button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+        const {
+            jsPDF
+        } = window.jspdf;
+
+        let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+        let usuarioActivo = JSON.parse(localStorage.getItem("usuarioActivo"));
+        let votos = {
+            "Candidato A": 0,
+            "Candidato B": 0,
+            "Candidato C": 0,
+            "Candidato D": 0
+        };
+
+        function guardarUsuarios() {
+            localStorage.setItem("usuarios", JSON.stringify(usuarios));
+        }
+
+        function guardarUsuarioActivo() {
+            localStorage.setItem("usuarioActivo", JSON.stringify(usuarioActivo));
+        }
+
+        function mostrarSeccion(seccion) {
+            const secciones = ["registro", "login", "recuperar", "votar", "estadisticas"];
+            secciones.forEach(id => {
+                document.getElementById(id).style.display = (id === seccion) ? "block" : "none";
+            });
+            if (seccion === "votar") {
+                actualizarUsuarioActivo();
+            }
+        }
+
+        function actualizarUsuarioActivo() {
+            if (usuarioActivo) {
+                document.getElementById("usuarioActivo").textContent = usuarioActivo.nombre;
+            }
+        }
+
+        // Registro
+        document.getElementById("formRegistro").addEventListener("submit", function(e) {
+            e.preventDefault();
+            const ci = document.getElementById("ci").value.trim();
+            const nombre = document.getElementById("nombre").value.trim();
+            const correo = document.getElementById("correo").value.trim();
+            const celular = document.getElementById("celular").value.trim();
+            const departamento = document.getElementById("departamento").value;
+            const fechaNacimiento = document.getElementById("fechaNacimiento").value;
+
+            if (usuarios.some(u => u.ci === ci)) {
+                alert("Ya existe un usuario con ese CI");
+                return;
+            }
+
+            usuarios.push({
+                ci,
+                nombre,
+                correo,
+                celular,
+                departamento,
+                fechaNacimiento,
+                voto: null
+            });
+
+            guardarUsuarios();
+            alert("Registro exitoso, ya puedes iniciar sesión.");
+            mostrarSeccion("login");
+            this.reset();
+        });
+
+
+        // Login
+        document.getElementById("formLogin").addEventListener("submit", function(e) {
+            e.preventDefault();
+            const ci = document.getElementById("loginCi").value.trim();
+            const usuario = usuarios.find(u => u.ci === ci);
+            if (usuario) {
+                usuarioActivo = usuario;
+                guardarUsuarioActivo();
+                actualizarUsuarioActivo();
+                mostrarSeccion("votar");
+                this.reset();
+            } else {
+                alert("Usuario no encontrado, por favor regístrate.");
+            }
+        });
+
+        // Recuperar cuenta
+        document.getElementById("formRecuperar").addEventListener("submit", function(e) {
+            e.preventDefault();
+            const correo = document.getElementById("recuperarCorreo").value.trim();
+            const usuario = usuarios.find(u => u.correo === correo);
+            if (usuario) {
+                alert(`Tu CI es: ${usuario.ci}`);
+                mostrarSeccion("login");
+                this.reset();
+            } else {
+                alert("Correo no encontrado.");
+            }
+        });
+
+        // Votación
+        document.getElementById("formVotar").addEventListener("submit", function(e) {
+            e.preventDefault();
+            const candidatoSeleccionado = document.querySelector("input[name='candidato']:checked");
+            if (!candidatoSeleccionado) {
+                alert("Debes seleccionar un candidato.");
+                return;
+            }
+            const candidato = candidatoSeleccionado.value;
+
+            // Evitar doble voto
+            if (usuarioActivo.voto) {
+                alert("Ya has votado, no puedes votar de nuevo.");
+                return;
+            }
+
+            usuarioActivo.voto = candidato;
+
+            // Actualizar votos
+            votos[candidato]++;
+
+            // Actualizar usuario en lista y guardar
+            const index = usuarios.findIndex(u => u.ci === usuarioActivo.ci);
+            if (index !== -1) {
+                usuarios[index] = usuarioActivo;
+            }
+            guardarUsuarios();
+            guardarUsuarioActivo();
+
+            alert("Gracias por tu voto.");
+            mostrarEstadisticas();
+            mostrarSeccion("estadisticas");
+            this.reset();
+        });
+
+        function mostrarEstadisticas() {
+            const contenedor = document.getElementById("contenedorEstadisticas");
+            contenedor.innerHTML = "";
+
+            for (const candidato in votos) {
+                const votosCandidato = votos[candidato];
+                const div = document.createElement("div");
+                div.classList.add("mb-2");
+
+                // Barra visual
+                const porcentaje = (votosCandidato / totalVotos()) * 100 || 0;
+                div.innerHTML = `
+                <strong>${candidato}:</strong> ${votosCandidato} votos (${porcentaje.toFixed(1)}%)
+                <div class="progress">
+                    <div class="progress-bar bg-info" role="progressbar" style="width: ${porcentaje}%" aria-valuenow="${porcentaje}" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            `;
+                contenedor.appendChild(div);
+            }
+        }
+
+        function totalVotos() {
+            return Object.values(votos).reduce((a, b) => a + b, 0);
+        }
+
+        function cerrarSesion() {
+            usuarioActivo = null;
+            localStorage.removeItem("usuarioActivo");
+            mostrarSeccion("login");
+        }
+
+        function descargarResultadosPDF() {
+            const doc = new jsPDF();
+            doc.setFontSize(18);
+            doc.text("Resultados de Votación", 20, 20);
+
+            doc.setFontSize(12);
+            let y = 40;
+            for (const candidato in votos) {
+                doc.text(`${candidato}: ${votos[candidato]} votos`, 20, y);
+                y += 10;
+            }
+
+            doc.save("resultados_votacion.pdf");
+        }
+
+        // Al cargar la página, si hay usuario activo, mostrar votar
+        window.addEventListener("load", () => {
+            actualizarUsuarioActivo();
+            if (usuarioActivo) {
+                // Inicializar votos desde usuarios para mantener consistencia al recargar
+                votos = {
+                    "Candidato A": 0,
+                    "Candidato B": 0,
+                    "Candidato C": 0,
+                    "Candidato D": 0
+                };
+                usuarios.forEach(u => {
+                    if (u.voto && votos[u.voto] !== undefined) votos[u.voto]++;
+                });
+                mostrarSeccion("votar");
+            } else {
+                mostrarSeccion("login");
+            }
+        });
+        window.addEventListener("load", () => {
+            // Reconstruir votos desde los usuarios
+            votos = {
+                "Candidato A": 0,
+                "Candidato B": 0,
+                "Candidato C": 0,
+                "Candidato D": 0
+            };
+
+            usuarios.forEach(u => {
+                if (u.voto && votos[u.voto] !== undefined) votos[u.voto]++;
+            });
+
+            actualizarUsuarioActivo();
+
+            if (usuarioActivo) {
+                mostrarSeccion("votar");
+            } else {
+                mostrarSeccion("login");
+            }
+        });
+    </script>
+
+</body>
+
+</html>
